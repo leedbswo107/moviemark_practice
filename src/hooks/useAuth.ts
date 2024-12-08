@@ -6,20 +6,20 @@ import type { AuthCredentials, DecodedToken } from "@/types/auth";
 import { decodeJwt } from "@/utils/decodeJwt";
 
 export const useAuth = () => {
-	const setAuthState = useSetRecoilState(authState);
+  const setAuthState = useSetRecoilState(authState);
 
-	const login = async (credentials: AuthCredentials) => {
-		const response = await loginApi(credentials);
-		const decodedToken = decodeJwt<DecodedToken>(response.access_token);
-		if (decodedToken) {
-			setAuthState({ user: decodedToken });
-		}
-		return response;
-	};
+  const login = async (credentials: AuthCredentials) => {
+    const response = await loginApi(credentials);
+    const decodedToken = decodeJwt<DecodedToken>(response.access_token);
+    if (decodedToken) {
+      setAuthState({ user: decodedToken });
+    }
+    return response;
+  };
 
-	const logout = () => {
-		setAuthState({ user: null });
-	};
+  const logout = () => {
+    setAuthState({ user: null });
+  };
 
-	return { login, logout };
+  return { login, logout };
 };
