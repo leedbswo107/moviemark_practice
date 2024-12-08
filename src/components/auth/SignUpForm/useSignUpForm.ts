@@ -6,9 +6,18 @@ import { validateEmail, validatePassword } from "@/utils/validate";
 
 import { SignUpFormProps } from "./SignUpForm";
 
+type FormType = "email" | "password" | "passwordConfirm"
+
+interface FormState {
+  email: string;
+  password: string;
+	passwordConfirm: string;
+}
+
 interface FormErrors {
   email?: string;
   password?: string;
+	passwordConfirm?: string;
 }
 
 export const useSignUpForm = ({ onSuccess, onError }: SignUpFormProps) => {
@@ -17,6 +26,7 @@ export const useSignUpForm = ({ onSuccess, onError }: SignUpFormProps) => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const { showToastMessage } = useToastMessageContext();
+
 
   const validateForm = useCallback(() => {
     const newErrors: FormErrors = {};

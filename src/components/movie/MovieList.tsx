@@ -2,13 +2,15 @@
 
 import { useEffect } from "react";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
+// import { useInfiniteQuery } from "@tanstack/react-query";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 
 import { getMovies } from "@/api/movie";
 import { MovieListResponse } from "@/types/movie";
 
-import MovieCard from "./MovieCard";
+import MovieCard from "./MovieCard/MovieCard";
+import MovieListSkeleton from "./MovieListSkeleton";
 
 /**
  * 영화 목록을 보여주는 컴포넌트
@@ -33,12 +35,13 @@ const MovieList = () => {
 	// 영화 데이터 불러오기
 	const {
 		data,
-		isLoading,
+		// isLoading,
 		isError,
 		hasNextPage,
 		fetchNextPage,
 		isFetchingNextPage,
-	} = useInfiniteQuery<MovieListResponse>({
+	// } = useInfiniteQuery<MovieListResponse>({
+	} = useSuspenseInfiniteQuery<MovieListResponse>({
 		// 1. 이 데이터를 찾을 때 쓰는 고유한 이름표예요
 		queryKey: ["movies"],
 
@@ -75,7 +78,7 @@ const MovieList = () => {
 	}, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
 	// 로딩 중이거나 에러 발생 시 처리
-	if (isLoading) return <p className="text-center">영화 목록을 가져오는 중...</p>;
+	// if (isLoading) return <p className="text-center">영화 목록을 가져오는 중...</p>;
 	if (isError) return <p className="text-center">영화 목록을 불러오지 못했습니다.</p>;
 
 	return (
@@ -90,8 +93,8 @@ const MovieList = () => {
 			</div>
 
 			{/* 무한 스크롤 감지 영역 */}
-			<div ref={ref} className="h-10 mt-4 bg-red-700">
-				{isFetchingNextPage && <p className="text-center">더 불러오는 중...</p>}
+			<div ref={ref} className="h-10 mt-4">
+				{isFetchingNextPage && <MovieListSkeleton />}
 			</div>
 		</div>
 	);

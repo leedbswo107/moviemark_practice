@@ -20,6 +20,7 @@ const Header = () => {
           Movies
         </div>
         <div className="py-3 px-4 text-link text-gray-50 cursor-pointer">
+
           Bookmark
         </div>
         <div className="flex items-center gap-2">
